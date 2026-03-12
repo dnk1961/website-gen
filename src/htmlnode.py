@@ -18,3 +18,23 @@ class HTMLNode:
 
     def __repr__(self):
         return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
+
+class LeafNode(HTMLNode):
+    #this is public facing interface, what variables the user is allowed to pass to LeafNode object
+    def __init__(self, tag, value, props=None):
+        #super accesses the parent's constructor __init__ method 
+        super().__init__(tag,value,None,props)
+
+    def to_html(self):
+        if self.value is None:
+            raise ValueError("self has no value")
+        if self.tag is None:
+            return self.value
+        if self.props:
+            return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+        else:
+            return f"<{self.tag}>{self.value}</{self.tag}>"
+        
+    def __repr__(self):
+        return f"LeafNode({self.tag}, {self.value}, {self.props})"
+    
