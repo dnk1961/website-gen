@@ -2,7 +2,7 @@ from textnode import *
 from blocknode import *
 from inline_markdown import *
 from htmlnode import *
-from main import *
+from markdown_blocks import *
 import unittest
 
 class TestMain(unittest.TestCase):
@@ -81,7 +81,38 @@ This is another paragraph with _italic_ text here
             "<div><ul><li>This is <b>bolded</b> paragraph</li><li>text in a p</li><li>tag here</li></ul><p>This is another paragraph with <i>italic</i> text here</p></div>"
         )
 
+    def test_lists(self):
+        md = """
+- This is a list
+- with items
+- and _more_ items
 
+1. This is an `ordered` list
+2. with items
+3. and more items
+
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ul><li>This is a list</li><li>with items</li><li>and <i>more</i> items</li></ul><ol><li>This is an <code>ordered</code> list</li><li>with items</li><li>and more items</li></ol></div>",
+        )
+    def test_code(self):
+        md = """
+```
+This is text that _should_ remain
+the **same** even with inline stuff
+```
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
+        )
 
 if __name__ == '__main__':
     unittest.main()
