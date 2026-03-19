@@ -91,6 +91,14 @@ def text_to_textnodes(text):
     split_by_delimiters_and_images_and_links = split_nodes_links(split_by_delimiters_and_images)
     return split_by_delimiters_and_images_and_links
 
+def markdown_to_blocks(markdown: str) -> list[str]:
+    result = []
+    blocks = markdown.split("\n\n")
+    for block in blocks:
+        stripped_block = block.strip()
+        if stripped_block != "":
+            result.append(stripped_block)
+    return result
     
 def main():
     text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
